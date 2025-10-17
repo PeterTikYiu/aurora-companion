@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Data extraction rules for Android 12+
+      These rules define what data can be backed up
+    -->
+    <data-extraction-rules>
+        <cloud-backup>
+            <!-- Allow backup of preferences -->
+            <include domain="sharedpref" path="."/>
+            <!-- Exclude database (contains local-only data) -->
+            <exclude domain="database" path="."/>
+        </cloud-backup>
+    </data-extraction-rules>
+</resources>
