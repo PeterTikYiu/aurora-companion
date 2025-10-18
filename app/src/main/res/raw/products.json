@@ -1,0 +1,482 @@
+[
+  {
+    "sku": "DOG001",
+    "name": "Premium Dry Dog Food 15kg",
+    "category": "Dog",
+    "price": 45.99,
+    "stockQty": 25,
+    "description": "Complete nutrition for adult dogs with chicken and rice"
+  },
+  {
+    "sku": "DOG002",
+    "name": "Dog Chew Toy Set",
+    "category": "Dog",
+    "price": 12.99,
+    "stockQty": 50,
+    "description": "Durable rubber toys for active chewers"
+  },
+  {
+    "sku": "DOG003",
+    "name": "Retractable Dog Leash",
+    "category": "Dog",
+    "price": 18.50,
+    "stockQty": 15,
+    "description": "5-meter retractable leash for medium dogs"
+  },
+  {
+    "sku": "DOG004",
+    "name": "Dog Grooming Brush",
+    "category": "Dog",
+    "price": 9.99,
+    "stockQty": 30,
+    "description": "Dual-sided brush for all coat types"
+  },
+  {
+    "sku": "DOG005",
+    "name": "Orthopedic Dog Bed Large",
+    "category": "Dog",
+    "price": 65.00,
+    "stockQty": 8,
+    "description": "Memory foam bed for senior dogs"
+  },
+  {
+    "sku": "DOG006",
+    "name": "Dog Training Treats 500g",
+    "category": "Dog",
+    "price": 7.99,
+    "stockQty": 40,
+    "description": "Low-calorie training rewards"
+  },
+  {
+    "sku": "DOG007",
+    "name": "Stainless Steel Dog Bowl Set",
+    "category": "Dog",
+    "price": 14.99,
+    "stockQty": 20,
+    "description": "Non-slip food and water bowls"
+  },
+  {
+    "sku": "DOG008",
+    "name": "Dog Dental Chews 28 Pack",
+    "category": "Dog",
+    "price": 19.99,
+    "stockQty": 5,
+    "description": "Daily dental care treats"
+  },
+  {
+    "sku": "DOG009",
+    "name": "Waterproof Dog Coat",
+    "category": "Dog",
+    "price": 28.00,
+    "stockQty": 12,
+    "description": "Reflective winter coat for medium dogs"
+  },
+  {
+    "sku": "DOG010",
+    "name": "Dog Poop Bags 300 Count",
+    "category": "Dog",
+    "price": 5.99,
+    "stockQty": 60,
+    "description": "Biodegradable waste bags"
+  },
+  {
+    "sku": "CAT001",
+    "name": "Cat Litter 10L Clumping",
+    "category": "Cat",
+    "price": 12.99,
+    "stockQty": 35,
+    "description": "Odour control clumping litter"
+  },
+  {
+    "sku": "CAT002",
+    "name": "Cat Scratching Post Tower",
+    "category": "Cat",
+    "price": 55.00,
+    "stockQty": 10,
+    "description": "Multi-level cat tree with sisal posts"
+  },
+  {
+    "sku": "CAT003",
+    "name": "Premium Cat Food Pouches 12pk",
+    "category": "Cat",
+    "price": 8.99,
+    "stockQty": 45,
+    "description": "Variety pack with fish and poultry"
+  },
+  {
+    "sku": "CAT004",
+    "name": "Interactive Cat Toy Wand",
+    "category": "Cat",
+    "price": 6.99,
+    "stockQty": 25,
+    "description": "Feather teaser wand"
+  },
+  {
+    "sku": "CAT005",
+    "name": "Covered Cat Litter Tray",
+    "category": "Cat",
+    "price": 24.99,
+    "stockQty": 15,
+    "description": "Hooded litter box with carbon filter"
+  },
+  {
+    "sku": "CAT006",
+    "name": "Cat Grooming Glove",
+    "category": "Cat",
+    "price": 8.50,
+    "stockQty": 30,
+    "description": "Gentle grooming and massage glove"
+  },
+  {
+    "sku": "CAT007",
+    "name": "Catnip Toys 3 Pack",
+    "category": "Cat",
+    "price": 5.99,
+    "stockQty": 40,
+    "description": "Soft plush toys filled with catnip"
+  },
+  {
+    "sku": "CAT008",
+    "name": "Cat Carrier Medium",
+    "category": "Cat",
+    "price": 32.00,
+    "stockQty": 8,
+    "description": "Ventilated travel carrier"
+  },
+  {
+    "sku": "CAT009",
+    "name": "Cat Water Fountain",
+    "category": "Cat",
+    "price": 28.99,
+    "stockQty": 12,
+    "description": "Filtered water fountain 2L"
+  },
+  {
+    "sku": "CAT010",
+    "name": "Cat Dental Treats 60g",
+    "category": "Cat",
+    "price": 4.99,
+    "stockQty": 50,
+    "description": "Teeth cleaning treats"
+  },
+  {
+    "sku": "FISH001",
+    "name": "Aquarium 60L Complete Set",
+    "category": "Fish",
+    "price": 89.99,
+    "stockQty": 6,
+    "description": "Tank with filter, heater, and LED light"
+  },
+  {
+    "sku": "FISH002",
+    "name": "Tropical Fish Flakes 100g",
+    "category": "Fish",
+    "price": 6.99,
+    "stockQty": 40,
+    "description": "Balanced nutrition for tropical fish"
+  },
+  {
+    "sku": "FISH003",
+    "name": "Aquarium Gravel 5kg Natural",
+    "category": "Fish",
+    "price": 8.50,
+    "stockQty": 25,
+    "description": "Natural colored substrate"
+  },
+  {
+    "sku": "FISH004",
+    "name": "Aquarium Plants Pack of 5",
+    "category": "Fish",
+    "price": 14.99,
+    "stockQty": 15,
+    "description": "Live aquatic plants"
+  },
+  {
+    "sku": "FISH005",
+    "name": "Fish Tank Heater 100W",
+    "category": "Fish",
+    "price": 18.99,
+    "stockQty": 20,
+    "description": "Adjustable aquarium heater"
+  },
+  {
+    "sku": "FISH006",
+    "name": "Water Test Kit",
+    "category": "Fish",
+    "price": 12.50,
+    "stockQty": 30,
+    "description": "Tests pH, ammonia, nitrite"
+  },
+  {
+    "sku": "FISH007",
+    "name": "Aquarium Filter Cartridges 3pk",
+    "category": "Fish",
+    "price": 9.99,
+    "stockQty": 35,
+    "description": "Replacement filter media"
+  },
+  {
+    "sku": "FISH008",
+    "name": "Fish Net Set of 3",
+    "category": "Fish",
+    "price": 5.99,
+    "stockQty": 20,
+    "description": "Small, medium, large nets"
+  },
+  {
+    "sku": "FISH009",
+    "name": "Aquarium Ornament Castle",
+    "category": "Fish",
+    "price": 11.99,
+    "stockQty": 12,
+    "description": "Decorative hiding place"
+  },
+  {
+    "sku": "FISH010",
+    "name": "Betta Fish Pellets 50g",
+    "category": "Fish",
+    "price": 4.99,
+    "stockQty": 45,
+    "description": "High-protein pellets for bettas"
+  },
+  {
+    "sku": "BIRD001",
+    "name": "Bird Cage Large 60x40x80cm",
+    "category": "Bird",
+    "price": 75.00,
+    "stockQty": 5,
+    "description": "Spacious cage for parakeets"
+  },
+  {
+    "sku": "BIRD002",
+    "name": "Budgie Seed Mix 1kg",
+    "category": "Bird",
+    "price": 5.99,
+    "stockQty": 50,
+    "description": "Nutritious seed blend"
+  },
+  {
+    "sku": "BIRD003",
+    "name": "Bird Perch Variety Pack",
+    "category": "Bird",
+    "price": 8.99,
+    "stockQty": 25,
+    "description": "Natural wood perches various sizes"
+  },
+  {
+    "sku": "BIRD004",
+    "name": "Cuttlebone 3 Pack",
+    "category": "Bird",
+    "price": 3.99,
+    "stockQty": 40,
+    "description": "Calcium supplement for birds"
+  },
+  {
+    "sku": "BIRD005",
+    "name": "Bird Toy Mirror with Bell",
+    "category": "Bird",
+    "price": 6.50,
+    "stockQty": 30,
+    "description": "Interactive toy for small birds"
+  },
+  {
+    "sku": "BIRD006",
+    "name": "Bird Bath",
+    "category": "Bird",
+    "price": 7.99,
+    "stockQty": 20,
+    "description": "Clip-on bathing dish"
+  },
+  {
+    "sku": "BIRD007",
+    "name": "Parrot Pellets 900g",
+    "category": "Bird",
+    "price": 12.99,
+    "stockQty": 15,
+    "description": "Complete nutrition for parrots"
+  },
+  {
+    "sku": "BIRD008",
+    "name": "Bird Cage Cover",
+    "category": "Bird",
+    "price": 14.99,
+    "stockQty": 10,
+    "description": "Light-blocking sleep cover"
+  },
+  {
+    "sku": "BIRD009",
+    "name": "Bird Millet Spray 10 Pack",
+    "category": "Bird",
+    "price": 5.99,
+    "stockQty": 35,
+    "description": "Natural treat spray"
+  },
+  {
+    "sku": "BIRD010",
+    "name": "Bird Nesting Box",
+    "category": "Bird",
+    "price": 16.99,
+    "stockQty": 8,
+    "description": "Wooden breeding box"
+  },
+  {
+    "sku": "REPT001",
+    "name": "Reptile Terrarium 60x45x45cm",
+    "category": "Reptile",
+    "price": 95.00,
+    "stockQty": 4,
+    "description": "Glass terrarium with mesh top"
+  },
+  {
+    "sku": "REPT002",
+    "name": "Heat Lamp with Bulb",
+    "category": "Reptile",
+    "price": 22.99,
+    "stockQty": 15,
+    "description": "75W basking lamp setup"
+  },
+  {
+    "sku": "REPT003",
+    "name": "Reptile Sand 5kg Desert",
+    "category": "Reptile",
+    "price": 9.99,
+    "stockQty": 20,
+    "description": "Natural desert substrate"
+  },
+  {
+    "sku": "REPT004",
+    "name": "Bearded Dragon Food 250g",
+    "category": "Reptile",
+    "price": 11.99,
+    "stockQty": 18,
+    "description": "Pelleted diet for bearded dragons"
+  },
+  {
+    "sku": "REPT005",
+    "name": "Reptile Water Dish",
+    "category": "Reptile",
+    "price": 7.99,
+    "stockQty": 25,
+    "description": "Heavy ceramic water bowl"
+  },
+  {
+    "sku": "REPT006",
+    "name": "UV Bulb for Reptiles",
+    "category": "Reptile",
+    "price": 18.99,
+    "stockQty": 12,
+    "description": "UVB 10.0 compact bulb"
+  },
+  {
+    "sku": "REPT007",
+    "name": "Reptile Hide Cave",
+    "category": "Reptile",
+    "price": 13.50,
+    "stockQty": 16,
+    "description": "Natural rock hide"
+  },
+  {
+    "sku": "REPT008",
+    "name": "Thermometer Hygrometer Combo",
+    "category": "Reptile",
+    "price": 14.99,
+    "stockQty": 10,
+    "description": "Digital temperature and humidity gauge"
+  },
+  {
+    "sku": "REPT009",
+    "name": "Reptile Calcium Powder",
+    "category": "Reptile",
+    "price": 6.99,
+    "stockQty": 22,
+    "description": "Calcium supplement with D3"
+  },
+  {
+    "sku": "REPT010",
+    "name": "Live Cricket Tub 50 Count",
+    "category": "Reptile",
+    "price": 8.99,
+    "stockQty": 0,
+    "description": "Live feeder insects"
+  },
+  {
+    "sku": "SMALL001",
+    "name": "Hamster Cage with Tubes",
+    "category": "Small Pets",
+    "price": 45.00,
+    "stockQty": 7,
+    "description": "Multi-level habitat with tunnels"
+  },
+  {
+    "sku": "SMALL002",
+    "name": "Guinea Pig Food 2kg",
+    "category": "Small Pets",
+    "price": 9.99,
+    "stockQty": 30,
+    "description": "Vitamin C enriched pellets"
+  },
+  {
+    "sku": "SMALL003",
+    "name": "Small Pet Bedding 10L",
+    "category": "Small Pets",
+    "price": 6.99,
+    "stockQty": 40,
+    "description": "Soft paper bedding"
+  },
+  {
+    "sku": "SMALL004",
+    "name": "Exercise Wheel Silent",
+    "category": "Small Pets",
+    "price": 11.99,
+    "stockQty": 20,
+    "description": "Quiet running wheel for hamsters"
+  },
+  {
+    "sku": "SMALL005",
+    "name": "Rabbit Hutch Indoor Large",
+    "category": "Small Pets",
+    "price": 120.00,
+    "stockQty": 3,
+    "description": "Spacious indoor rabbit home"
+  },
+  {
+    "sku": "SMALL006",
+    "name": "Small Pet Water Bottle",
+    "category": "Small Pets",
+    "price": 4.99,
+    "stockQty": 35,
+    "description": "No-drip water bottle 250ml"
+  },
+  {
+    "sku": "SMALL007",
+    "name": "Hay 1kg Timothy",
+    "category": "Small Pets",
+    "price": 7.50,
+    "stockQty": 25,
+    "description": "High-fiber timothy hay"
+  },
+  {
+    "sku": "SMALL008",
+    "name": "Small Pet Hide House",
+    "category": "Small Pets",
+    "price": 8.99,
+    "stockQty": 18,
+    "description": "Wooden hideaway"
+  },
+  {
+    "sku": "SMALL009",
+    "name": "Rabbit Harness and Lead",
+    "category": "Small Pets",
+    "price": 12.99,
+    "stockQty": 15,
+    "description": "Adjustable harness for rabbits"
+  },
+  {
+    "sku": "SMALL010",
+    "name": "Small Pet Treats Mix 500g",
+    "category": "Small Pets",
+    "price": 5.99,
+    "stockQty": 28,
+    "description": "Healthy vegetable treats"
+  }
+]

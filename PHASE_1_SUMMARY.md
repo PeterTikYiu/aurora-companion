@@ -66,7 +66,7 @@ aurora-companion/
 
 | Component | Details |
 |-----------|---------|
-| **Language** | Kotlin 1.9.23 |
+| **Language** | Kotlin 1.9.24 |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 35 (Android 15) |
 | **Compile SDK** | 35 |

@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Feed fish in tropical section",
+    "description": "Feed all fish in tropical tanks. Check water temperature.",
+    "priority": "HIGH",
+    "assignedTo": null,
+    "dueDate": null
+  },
+  {
+    "title": "Clean bird cages",
+    "description": "Clean all bird cages, replace bedding and water.",
+    "priority": "MEDIUM",
+    "assignedTo": null,
+    "dueDate": null
+  },
+  {
+    "title": "Restock dog food aisle",
+    "description": "Low stock alert: Premium Dry Dog Food needs restocking.",
+    "priority": "HIGH",
+    "assignedTo": null,
+    "dueDate": null
+  },
+  {
+    "title": "Check reptile heating lamps",
+    "description": "Verify all heating lamps in reptile section are functioning.",
+    "priority": "HIGH",
+    "assignedTo": null,
+    "dueDate": null
+  },
+  {
+    "title": "Organize cat toy display",
+    "description": "Reorganize cat toy endcap display.",
+    "priority": "LOW",
+    "assignedTo": null,
+    "dueDate": null
+  },
+  {
+    "title": "Water quality check - aquariums",
+    "description": "Test water parameters in all display aquariums.",
+    "priority": "MEDIUM",
+    "assignedTo": null,
+    "dueDate": null
+  },
+  {
+    "title": "Feed small mammals",
+    "description": "Feed all hamsters, guinea pigs, and rabbits.",
+    "priority": "HIGH",
+    "assignedTo": null,
+    "dueDate": null
+  },
+  {
+    "title": "Dispose of expired products",
+    "description": "Check expiry dates on food items and remove expired stock.",
+    "priority": "MEDIUM",
+    "assignedTo": null,
+    "dueDate": null
+  },
+  {
+    "title": "Update price tags",
+    "description": "Update price tags for items on promotion this week.",
+    "priority": "MEDIUM",
+    "assignedTo": null,
+    "dueDate": null
+  },
+  {
+    "title": "Clean aquarium glass",
+    "description": "Clean algae from display tank glass.",
+    "priority": "LOW",
+    "assignedTo": null,
+    "dueDate": null
+  }
+]
