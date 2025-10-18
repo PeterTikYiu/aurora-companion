@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.auroracompanion.core.ui.theme.AuroraCompanionTheme
+import com.auroracompanion.navigation.AuroraNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -40,9 +42,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // TODO: Add Navigation Graph here
-                    // For now, we'll add a placeholder composable
-                    PlaceholderScreen()
+                    // Navigation Graph
+                    val navController = rememberNavController()
+                    AuroraNavGraph(navController = navController)
                 }
             }
         }
