@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.auroracompanion.feature.product.ui.screen.ProductDetailScreen
 import com.auroracompanion.feature.product.ui.screen.ProductListScreen
+import com.auroracompanion.feature.welcome.ui.screen.WelcomeScreen
 
 /**
  * Navigation Graph
@@ -30,6 +31,18 @@ fun AuroraNavGraph(
         startDestination = startDestination,
         modifier = modifier
     ) {
+        // Welcome Screen (First Launch)
+        composable(route = Screen.Welcome.route) {
+            WelcomeScreen(
+                onSetupComplete = {
+                    // Navigate to Product List and clear Welcome from back stack
+                    navController.navigate(Screen.ProductList.route) {
+                        popUpTo(Screen.Welcome.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
         // Product List Screen
         composable(route = Screen.ProductList.route) {
             ProductListScreen(
@@ -54,7 +67,6 @@ fun AuroraNavGraph(
         }
         
         // TODO: Add more screens as features are implemented
-        // - Welcome Screen
         // - Task List Screen
         // - Settings Screen
     }
