@@ -28,6 +28,8 @@ import androidx.room.Index
  * @property stockQty Current stock quantity
  * @property description Optional product description
  * @property imageUri Optional local image path
+ * @property minStockLevel Minimum stock threshold for low stock alerts (default: 10)
+ * @property lastStockUpdate Timestamp of last stock adjustment (null if never adjusted)
  * @property lastModified Timestamp of last update (for sync)
  */
 @Entity(
@@ -49,5 +51,7 @@ data class ProductEntity(
     val stockQty: Int,
     val description: String? = null,
     val imageUri: String? = null,
+    val minStockLevel: Int = 10,
+    val lastStockUpdate: Long? = null,
     val lastModified: Long = System.currentTimeMillis()
 )

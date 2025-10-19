@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.auroracompanion.core.data.local.AuroraDatabase
 import com.auroracompanion.feature.product.data.local.dao.ProductDao
 import com.auroracompanion.feature.task.data.local.dao.TaskDao
+import com.auroracompanion.feature.inventory.data.local.dao.StockMovementDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,16 +27,16 @@ import javax.inject.Singleton
  * - AuroraDatabase: Main Room database instance
  * - ProductDao: Product data access
  * - TaskDao: Task data access
+ * - StockMovementDao: Inventory audit trail access
  * 
  * Why Singleton?
  * - Database should only be created once
  * - Prevents multiple connections
  * - Better performance and memory usage
  * 
- * Future Additions:
- * - Migration strategies for schema updates
- * - Database callbacks for seeding
- * - Query interceptors for logging
+ * Migration Strategy:
+ * - Version 1 → 2: Added stock tracking fields and movements table
+ * - Future migrations should be added to AuroraDatabase.kt
  */
 @Module
 @InstallIn(SingletonComponent::class)
@@ -47,11 +48,7 @@ object DatabaseModule {
      * Creates database with:
      * - Application context (not Activity context - prevents leaks)
      * - Database name from constants
-     * - Fallback to destructive migration (for development)
-     * 
-     * Production Note:
-     * Replace fallbackToDestructiveMigration() with proper migrations
-     * before releasing to users.
+     * - Migration from v1 to v2 for inventory features
      * 
      * @param context Application context from Hilt
      * @return Singleton database instance
@@ -66,12 +63,11 @@ object DatabaseModule {
             AuroraDatabase::class.java,
             AuroraDatabase.DATABASE_NAME
         )
-            // Development: Drop and recreate on schema changes
-            // Production: Implement proper migrations
-            .fallbackToDestructiveMigration()
+            // Add migration from version 1 to 2
+            .addMigrations(AuroraDatabase.MIGRATION_1_2)
             
-            // Optional: Add callback for database creation
-            // .addCallback(DatabaseCallback())
+            // Fallback for development (remove in production)
+            .fallbackToDestructiveMigration()
             
             .build()
     }
@@ -98,5 +94,17 @@ object DatabaseModule {
     @Singleton
     fun provideTaskDao(database: AuroraDatabase): TaskDao {
         return database.taskDao()
+    }
+    
+    /**
+     * Provides StockMovementDao from database
+     * 
+     * @param database Aurora database instance
+     * @return StockMovementDao for inventory audit trail
+     */
+    @Provides
+    @Singleton
+    fun provideStockMovementDao(database: AuroraDatabase): StockMovementDao {
+        return database.stockMovementDao()
     }
 }
