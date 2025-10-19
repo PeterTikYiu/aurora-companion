@@ -1,6 +1,7 @@
 package com.auroracompanion.core.data.repository
 
 import com.auroracompanion.core.data.Result
+import com.auroracompanion.core.data.asResult
 import com.auroracompanion.feature.product.domain.model.Product
 import com.auroracompanion.core.data.model.StockMovement
 import com.auroracompanion.core.data.model.MovementType
@@ -283,8 +284,9 @@ class InventoryRepository @Inject constructor(
             category = this.category,
             price = this.price,
             stockQty = this.stockQty,
-            description = this.description ?: "",
-            imageUri = this.imageUri
+            description = this.description,
+            imageUri = this.imageUri,
+            lastModified = this.lastModified
         )
     }
     

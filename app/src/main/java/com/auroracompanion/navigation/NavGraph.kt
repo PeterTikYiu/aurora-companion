@@ -3,6 +3,10 @@ package com.auroracompanion.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -10,7 +14,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.auroracompanion.feature.inventory.ui.viewmodel.InventoryViewModel
+import com.auroracompanion.core.data.repository.InventoryRepository
+import com.auroracompanion.feature.product.data.local.dao.ProductDao
 import com.auroracompanion.feature.product.ui.screen.ProductDetailScreen
 import com.auroracompanion.feature.product.ui.screen.ProductListScreen
 import com.auroracompanion.feature.task.ui.screen.TaskDetailScreen
@@ -24,8 +29,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import com.auroracompanion.core.data.Result
+import com.auroracompanion.feature.product.domain.model.Product
+import kotlinx.coroutines.flow.first
 
 /**
  * Navigation Graph
@@ -149,26 +157,46 @@ fun AuroraNavGraph(
             )
         ) { backStackEntry ->
             val productId = backStackEntry.arguments?.getInt("productId") ?: return@composable
-            val viewModel: InventoryViewModel = hiltViewModel()
-            val productsState by viewModel.products.collectAsState()
+            val viewModel: com.auroracompanion.feature.inventory.ui.viewmodel.InventoryViewModel = hiltViewModel()
             
-            when (val state = productsState) {
-                is Result.Loading -> {
+            var product by remember { mutableStateOf<Product?>(null) }
+            var isLoading by remember { mutableStateOf(true) }
+            var errorMessage by remember { mutableStateOf<String?>(null) }
+            
+            LaunchedEffect(productId) {
+                isLoading = true
+                val result = viewModel.uiState.first()
+                when (result) {
+                    is com.auroracompanion.feature.inventory.ui.viewmodel.InventoryUiState.Success -> {
+                        product = result.products.find { it.id == productId }
+                        if (product == null) {
+                            errorMessage = "Product not found"
+                        }
+                    }
+                    is com.auroracompanion.feature.inventory.ui.viewmodel.InventoryUiState.Error -> {
+                        errorMessage = result.message
+                    }
+                    else -> {}
+                }
+                isLoading = false
+            }
+            
+            when {
+                isLoading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
                 }
-                is Result.Success -> {
-                    val product = state.data.find { it.id == productId }
-                    if (product != null) {
-                        StockAdjustmentScreen(
-                            product = product,
-                            onNavigateBack = { navController.navigateUp() }
-                        )
+                errorMessage != null -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(errorMessage ?: "Error loading product")
                     }
                 }
-                is Result.Error -> {
-                    // Error state handled by screen
+                product != null -> {
+                    StockAdjustmentScreen(
+                        product = product!!,
+                        onNavigateBack = { navController.navigateUp() }
+                    )
                 }
             }
         }
@@ -181,28 +209,48 @@ fun AuroraNavGraph(
             )
         ) { backStackEntry ->
             val productId = backStackEntry.arguments?.getInt("productId") ?: return@composable
-            val viewModel: InventoryViewModel = hiltViewModel()
-            val productsState by viewModel.products.collectAsState()
+            val viewModel: com.auroracompanion.feature.inventory.ui.viewmodel.InventoryViewModel = hiltViewModel()
             
-            when (val state = productsState) {
-                is Result.Loading -> {
+            var product by remember { mutableStateOf<Product?>(null) }
+            var isLoading by remember { mutableStateOf(true) }
+            var errorMessage by remember { mutableStateOf<String?>(null) }
+            
+            LaunchedEffect(productId) {
+                isLoading = true
+                val result = viewModel.uiState.first()
+                when (result) {
+                    is com.auroracompanion.feature.inventory.ui.viewmodel.InventoryUiState.Success -> {
+                        product = result.products.find { it.id == productId }
+                        if (product == null) {
+                            errorMessage = "Product not found"
+                        }
+                    }
+                    is com.auroracompanion.feature.inventory.ui.viewmodel.InventoryUiState.Error -> {
+                        errorMessage = result.message
+                    }
+                    else -> {}
+                }
+                isLoading = false
+            }
+            
+            when {
+                isLoading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
                 }
-                is Result.Success -> {
-                    val product = state.data.find { it.id == productId }
-                    if (product != null) {
-                        val stockHistoryFlow = viewModel.getStockHistory(productId)
-                        StockHistoryScreen(
-                            product = product,
-                            stockHistoryFlow = stockHistoryFlow,
-                            onNavigateBack = { navController.navigateUp() }
-                        )
+                errorMessage != null -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(errorMessage ?: "Error loading product")
                     }
                 }
-                is Result.Error -> {
-                    // Error state handled by screen
+                product != null -> {
+                    val stockHistoryFlow = viewModel.getStockHistory(productId)
+                    StockHistoryScreen(
+                        product = product!!,
+                        stockHistoryFlow = stockHistoryFlow,
+                        onNavigateBack = { navController.navigateUp() }
+                    )
                 }
             }
         }
