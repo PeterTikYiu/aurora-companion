@@ -59,6 +59,32 @@ sealed class Screen(val route: String) {
     }
     
     /**
+     * Inventory List Screen
+     * Inventory management main screen
+     */
+    data object InventoryList : Screen("inventory")
+    
+    /**
+     * Stock Adjustment Screen
+     * Adjust stock levels for a product
+     * 
+     * @param productId Product ID parameter
+     */
+    data object StockAdjustment : Screen("inventory/adjust/{productId}") {
+        fun createRoute(productId: Int) = "inventory/adjust/$productId"
+    }
+    
+    /**
+     * Stock History Screen
+     * View stock movement history for a product
+     * 
+     * @param productId Product ID parameter
+     */
+    data object StockHistory : Screen("inventory/history/{productId}") {
+        fun createRoute(productId: Int) = "inventory/history/$productId"
+    }
+    
+    /**
      * Settings Screen
      * App configuration
      */

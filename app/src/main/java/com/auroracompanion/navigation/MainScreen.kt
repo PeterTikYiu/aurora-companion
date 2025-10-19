@@ -3,6 +3,7 @@ package com.auroracompanion.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -53,6 +54,22 @@ fun MainScreen(
                     selected = currentDestination?.hierarchy?.any { it.route == Screen.TaskList.route } == true,
                     onClick = {
                         navController.navigate(Screen.TaskList.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
+                
+                // Inventory Tab
+                NavigationBarItem(
+                    icon = { Icon(Icons.Default.Inventory2, contentDescription = "Inventory") },
+                    label = { Text("Inventory") },
+                    selected = currentDestination?.hierarchy?.any { it.route == Screen.InventoryList.route } == true,
+                    onClick = {
+                        navController.navigate(Screen.InventoryList.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }

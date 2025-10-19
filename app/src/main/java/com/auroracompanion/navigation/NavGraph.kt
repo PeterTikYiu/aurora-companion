@@ -1,18 +1,31 @@
 package com.auroracompanion.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.auroracompanion.feature.inventory.ui.viewmodel.InventoryViewModel
 import com.auroracompanion.feature.product.ui.screen.ProductDetailScreen
 import com.auroracompanion.feature.product.ui.screen.ProductListScreen
 import com.auroracompanion.feature.task.ui.screen.TaskDetailScreen
 import com.auroracompanion.feature.task.ui.screen.TaskFormScreen
 import com.auroracompanion.feature.task.ui.screen.TaskListScreen
+import com.auroracompanion.feature.inventory.ui.screen.InventoryListScreen
+import com.auroracompanion.feature.inventory.ui.screen.StockAdjustmentScreen
+import com.auroracompanion.feature.inventory.ui.screen.StockHistoryScreen
 import com.auroracompanion.feature.welcome.ui.screen.WelcomeScreen
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.ui.Alignment
+import com.auroracompanion.core.data.Result
 
 /**
  * Navigation Graph
@@ -116,7 +129,82 @@ fun AuroraNavGraph(
             )
         }
         
-        // TODO: Add more screens as features are implemented
-        // - Settings Screen
+        // Inventory List Screen
+        composable(route = Screen.InventoryList.route) {
+            InventoryListScreen(
+                onProductClick = { productId ->
+                    navController.navigate(Screen.ProductDetail.createRoute(productId.toString()))
+                },
+                onAdjustStock = { productId ->
+                    navController.navigate(Screen.StockAdjustment.createRoute(productId))
+                }
+            )
+        }
+        
+        // Stock Adjustment Screen
+        composable(
+            route = Screen.StockAdjustment.route,
+            arguments = listOf(
+                navArgument("productId") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getInt("productId") ?: return@composable
+            val viewModel: InventoryViewModel = hiltViewModel()
+            val productsState by viewModel.products.collectAsState()
+            
+            when (val state = productsState) {
+                is Result.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+                is Result.Success -> {
+                    val product = state.data.find { it.id == productId }
+                    if (product != null) {
+                        StockAdjustmentScreen(
+                            product = product,
+                            onNavigateBack = { navController.navigateUp() }
+                        )
+                    }
+                }
+                is Result.Error -> {
+                    // Error state handled by screen
+                }
+            }
+        }
+        
+        // Stock History Screen
+        composable(
+            route = Screen.StockHistory.route,
+            arguments = listOf(
+                navArgument("productId") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getInt("productId") ?: return@composable
+            val viewModel: InventoryViewModel = hiltViewModel()
+            val productsState by viewModel.products.collectAsState()
+            
+            when (val state = productsState) {
+                is Result.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+                is Result.Success -> {
+                    val product = state.data.find { it.id == productId }
+                    if (product != null) {
+                        val stockHistoryFlow = viewModel.getStockHistory(productId)
+                        StockHistoryScreen(
+                            product = product,
+                            stockHistoryFlow = stockHistoryFlow,
+                            onNavigateBack = { navController.navigateUp() }
+                        )
+                    }
+                }
+                is Result.Error -> {
+                    // Error state handled by screen
+                }
+            }
+        }
     }
 }

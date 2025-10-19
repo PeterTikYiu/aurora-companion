@@ -198,6 +198,16 @@ class InventoryViewModel @Inject constructor(
     }
     
     /**
+     * Get stock history for a product
+     * 
+     * @param productId Product ID
+     * @return Flow of stock movement history
+     */
+    fun getStockHistory(productId: Int): Flow<Result<List<com.auroracompanion.core.data.model.StockMovement>>> {
+        return inventoryRepository.getStockHistory(productId)
+    }
+    
+    /**
      * Get empty state message based on current filters
      */
     private fun getEmptyMessage(): String {
