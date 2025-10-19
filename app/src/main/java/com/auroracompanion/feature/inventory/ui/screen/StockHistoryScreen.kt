@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.auroracompanion.core.data.Result
-import com.auroracompanion.core.data.model.Product
+import com.auroracompanion.feature.product.domain.model.Product
 import com.auroracompanion.core.data.model.StockMovement
 import com.auroracompanion.core.data.repository.InventoryRepository
 import com.auroracompanion.feature.inventory.ui.components.StockMovementItem

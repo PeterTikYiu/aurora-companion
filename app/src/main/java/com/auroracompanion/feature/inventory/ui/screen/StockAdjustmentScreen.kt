@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.auroracompanion.core.data.model.Product
+import com.auroracompanion.feature.product.domain.model.Product
 import com.auroracompanion.core.data.model.MovementType
 import com.auroracompanion.feature.inventory.ui.viewmodel.StockAdjustmentViewModel
 import com.auroracompanion.feature.inventory.ui.viewmodel.AdjustmentState

@@ -1,8 +1,7 @@
 package com.auroracompanion.core.data.repository
 
 import com.auroracompanion.core.data.Result
-import com.auroracompanion.core.data.asResult
-import com.auroracompanion.core.data.model.Product
+import com.auroracompanion.feature.product.domain.model.Product
 import com.auroracompanion.core.data.model.StockMovement
 import com.auroracompanion.core.data.model.MovementType
 import com.auroracompanion.feature.product.data.local.dao.ProductDao
@@ -11,6 +10,7 @@ import com.auroracompanion.feature.inventory.data.local.dao.StockMovementDao
 import com.auroracompanion.feature.inventory.data.local.entity.StockMovementEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -64,16 +64,16 @@ class InventoryRepository @Inject constructor(
     ): Result<Int> {
         return try {
             // Get current product
-            val product = productDao.getProductById(productId)
-                ?: return Result.Error(Exception("Product not found"))
+            val productEntity = productDao.getProductById(productId)
+                ?: return Result.Error("Product not found")
             
             // Calculate new stock level
-            val newStockQty = product.stockQty + quantityChange
+            val newStockQty = productEntity.stockQty + quantityChange
             
             // Validate non-negative stock
             if (newStockQty < 0) {
                 return Result.Error(
-                    Exception("Insufficient stock. Current: ${product.stockQty}, Attempted removal: ${-quantityChange}")
+                    "Insufficient stock. Current: ${productEntity.stockQty}, Attempted removal: ${-quantityChange}"
                 )
             }
             
@@ -89,16 +89,16 @@ class InventoryRepository @Inject constructor(
             stockMovementDao.insertMovement(movement)
             
             // Update product stock level
-            val updatedProduct = product.copy(
+            val updatedProduct = productEntity.copy(
                 stockQty = newStockQty,
                 lastStockUpdate = System.currentTimeMillis(),
                 lastModified = System.currentTimeMillis()
             )
-            productDao.update(updatedProduct)
+            productDao.updateProduct(updatedProduct)
             
             Result.Success(newStockQty)
         } catch (e: Exception) {
-            Result.Error(e)
+            Result.Error("Failed to adjust stock: ${e.message}", e)
         }
     }
     
@@ -245,7 +245,7 @@ class InventoryRepository @Inject constructor(
             
             Result.Success(stats)
         } catch (e: Exception) {
-            Result.Error(e)
+            Result.Error("Failed to get inventory stats: ${e.message}", e)
         }
     }
     
@@ -257,18 +257,18 @@ class InventoryRepository @Inject constructor(
      */
     suspend fun updateMinStockLevel(productId: Int, minStockLevel: Int): Result<Unit> {
         return try {
-            val product = productDao.getProductById(productId)
-                ?: return Result.Error(Exception("Product not found"))
+            val productEntity = productDao.getProductById(productId)
+                ?: return Result.Error("Product not found")
             
-            val updated = product.copy(
+            val updated = productEntity.copy(
                 minStockLevel = minStockLevel,
                 lastModified = System.currentTimeMillis()
             )
-            productDao.update(updated)
+            productDao.updateProduct(updated)
             
             Result.Success(Unit)
         } catch (e: Exception) {
-            Result.Error(e)
+            Result.Error("Failed to update min stock level: ${e.message}", e)
         }
     }
     

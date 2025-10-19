@@ -1,5 +1,10 @@
 package com.auroracompanion.core.data
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+
 /**
  * A generic wrapper for handling operation results.
  * 
@@ -80,4 +85,29 @@ inline fun <T> Result<T>.onError(action: (String, Throwable?) -> Unit): Result<T
         action(message, exception)
     }
     return this
+}
+
+/**
+ * Extension function to convert a Flow to a Result Flow
+ * 
+ * Wraps emissions in Result.Success, prepends Result.Loading,
+ * and catches errors as Result.Error.
+ * 
+ * Example:
+ * ```
+ * productDao.getAllProducts()
+ *     .map { entities -> entities.map { it.toModel() } }
+ *     .asResult()
+ * ```
+ */
+fun <T> Flow<T>.asResult(): Flow<Result<T>> {
+    return this
+        .map<T, Result<T>> { Result.Success(it) }
+        .onStart { emit(Result.Loading) }
+        .catch { exception ->
+            emit(Result.Error(
+                message = exception.message ?: "Unknown error occurred",
+                exception = exception
+            ))
+        }
 }

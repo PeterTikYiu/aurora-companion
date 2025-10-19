@@ -3,7 +3,7 @@ package com.auroracompanion.feature.inventory.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.auroracompanion.core.data.model.MovementType
-import com.auroracompanion.core.data.model.Product
+import com.auroracompanion.feature.product.domain.model.Product
 import com.auroracompanion.core.data.repository.InventoryRepository
 import com.auroracompanion.core.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
