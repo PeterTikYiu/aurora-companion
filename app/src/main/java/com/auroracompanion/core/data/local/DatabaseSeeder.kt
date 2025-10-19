@@ -6,6 +6,7 @@ import com.auroracompanion.core.data.model.ProductDto
 import com.auroracompanion.core.data.model.TaskDto
 import com.auroracompanion.feature.product.data.local.entity.ProductEntity
 import com.auroracompanion.feature.task.data.local.entity.TaskEntity
+import com.auroracompanion.feature.inventory.data.local.entity.StockMovementEntity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 /**
  * Database Seeder
@@ -63,6 +65,7 @@ class DatabaseSeeder @Inject constructor(
             
             seedProducts()
             seedTasks()
+            seedStockMovements()  // Optional: seed sample stock history
             true
         } catch (e: Exception) {
             e.printStackTrace()
@@ -75,6 +78,7 @@ class DatabaseSeeder @Inject constructor(
      * 
      * Reads products.json from res/raw, parses it,
      * and inserts products into database.
+     * Also sets realistic stock levels and minimum thresholds.
      */
     private suspend fun seedProducts() {
         // Read JSON from resources
@@ -89,24 +93,42 @@ class DatabaseSeeder @Inject constructor(
             object : TypeToken<List<ProductDto>>() {}.type
         )
         
-        // Convert DTOs to Entities
-        val productEntities = productDtos.map { dto ->
+        // Convert DTOs to Entities with realistic stock levels
+        val productEntities = productDtos.mapIndexed { index, dto ->
+            // Vary stock levels for testing
+            val baseStock = dto.stockQty
+            val adjustedStock = when {
+                index % 5 == 0 -> 0  // Some out of stock
+                index % 5 == 1 -> (baseStock * 0.3).toInt().coerceAtMost(5)  // Some low stock
+                index % 5 == 2 -> (baseStock * 0.6).toInt()  // Medium stock
+                else -> baseStock  // Full stock
+            }
+            
+            // Set minimum stock levels based on category
+            val minStock = when (dto.category.lowercase()) {
+                "dogs", "cats" -> 15  // Popular categories need higher min
+                "fish", "birds" -> 10  // Medium categories
+                else -> 5  // Specialty categories
+            }
+            
             ProductEntity(
                 sku = dto.sku,
                 name = dto.name,
                 category = dto.category,
                 price = dto.price,
-                stockQty = dto.stockQty,
+                stockQty = adjustedStock,
                 description = dto.description,
                 imageUri = dto.imageUri,
-                lastModified = System.currentTimeMillis()
+                lastModified = System.currentTimeMillis(),
+                minStockLevel = minStock,
+                lastStockUpdate = if (adjustedStock > 0) System.currentTimeMillis() else null
             )
         }
         
         // Insert into database
         database.productDao().insertAll(productEntities)
         
-        println("✅ Seeded ${productEntities.size} products")
+        println("✅ Seeded ${productEntities.size} products with varied stock levels")
     }
     
     /**
@@ -149,6 +171,83 @@ class DatabaseSeeder @Inject constructor(
     }
     
     /**
+     * Seed sample stock movements
+     * 
+     * Creates realistic stock movement history for first 5 products
+     * to demonstrate the stock history feature.
+     */
+    private suspend fun seedStockMovements() {
+        val productCount = database.productDao().getProductCount().first()
+        if (productCount == 0) return
+        
+        val movements = mutableListOf<StockMovementEntity>()
+        val now = System.currentTimeMillis()
+        val staffMembers = listOf("Alice Johnson", "Bob Smith", "Carol Davis", "David Wilson")
+        
+        // Create movements for first 5 products
+        for (productId in 1..5.coerceAtMost(productCount)) {
+            // Received stock 30 days ago
+            movements.add(
+                StockMovementEntity(
+                    productId = productId,
+                    quantityChange = 50,
+                    movementType = "RECEIVED",
+                    reason = "Initial stock delivery",
+                    staffMember = staffMembers.random(),
+                    timestamp = now - (30L * 24 * 60 * 60 * 1000)
+                )
+            )
+            
+            // Some sales over the past month
+            for (i in 1..Random.nextInt(3, 8)) {
+                movements.add(
+                    StockMovementEntity(
+                        productId = productId,
+                        quantityChange = -Random.nextInt(1, 5),
+                        movementType = "SOLD",
+                        reason = "Customer purchase",
+                        staffMember = staffMembers.random(),
+                        timestamp = now - (Random.nextLong(1, 30) * 24 * 60 * 60 * 1000)
+                    )
+                )
+            }
+            
+            // Maybe a return
+            if (Random.nextBoolean()) {
+                movements.add(
+                    StockMovementEntity(
+                        productId = productId,
+                        quantityChange = Random.nextInt(1, 3),
+                        movementType = "RETURNED",
+                        reason = "Customer return - unopened",
+                        staffMember = staffMembers.random(),
+                        timestamp = now - (Random.nextLong(1, 15) * 24 * 60 * 60 * 1000)
+                    )
+                )
+            }
+            
+            // Maybe a damaged item
+            if (Random.nextBoolean()) {
+                movements.add(
+                    StockMovementEntity(
+                        productId = productId,
+                        quantityChange = -1,
+                        movementType = "DAMAGED",
+                        reason = "Package damaged during display",
+                        staffMember = staffMembers.random(),
+                        timestamp = now - (Random.nextLong(1, 20) * 24 * 60 * 60 * 1000)
+                    )
+                )
+            }
+        }
+        
+        // Insert all movements
+        database.stockMovementDao().insertMovements(movements)
+        
+        println("✅ Seeded ${movements.size} stock movements for demonstration")
+    }
+    
+    /**
      * Clear all data from database
      * Useful for reset/testing
      */
@@ -156,6 +255,7 @@ class DatabaseSeeder @Inject constructor(
         try {
             database.productDao().deleteAllProducts()
             database.taskDao().deleteAllTasks()
+            database.stockMovementDao().deleteAllMovements()
             true
         } catch (e: Exception) {
             e.printStackTrace()
