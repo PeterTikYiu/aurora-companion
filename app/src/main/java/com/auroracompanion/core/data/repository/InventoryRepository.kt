@@ -12,6 +12,7 @@ import com.auroracompanion.feature.inventory.data.local.entity.StockMovementEnti
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -65,7 +66,7 @@ class InventoryRepository @Inject constructor(
     ): Result<Int> {
         return try {
             // Get current product
-            val productEntity = productDao.getProductById(productId)
+            val productEntity = productDao.getProductById(productId).first()
                 ?: return Result.Error("Product not found")
             
             // Calculate new stock level
@@ -258,7 +259,7 @@ class InventoryRepository @Inject constructor(
      */
     suspend fun updateMinStockLevel(productId: Int, minStockLevel: Int): Result<Unit> {
         return try {
-            val productEntity = productDao.getProductById(productId)
+            val productEntity = productDao.getProductById(productId).first()
                 ?: return Result.Error("Product not found")
             
             val updated = productEntity.copy(
