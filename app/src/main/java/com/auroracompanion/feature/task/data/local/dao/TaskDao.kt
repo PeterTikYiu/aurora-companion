@@ -55,6 +55,12 @@ interface TaskDao {
     fun getCompletedTasks(): Flow<List<TaskEntity>>
     
     /**
+     * Get tasks by completion status
+     */
+    @Query("SELECT * FROM tasks WHERE isCompleted = :isCompleted ORDER BY CASE WHEN dueDate IS NULL THEN 1 ELSE 0 END, dueDate ASC")
+    fun getTasksByCompletion(isCompleted: Boolean): Flow<List<TaskEntity>>
+    
+    /**
      * Get tasks due today
      * @param startOfDay Timestamp for start of day (00:00:00)
      * @param endOfDay Timestamp for end of day (23:59:59)
@@ -73,6 +79,36 @@ interface TaskDao {
      */
     @Query("SELECT * FROM tasks WHERE assignedTo = :staffName ORDER BY dueDate ASC")
     fun getTasksByAssignee(staffName: String): Flow<List<TaskEntity>>
+    
+    /**
+     * Search tasks by title (case-insensitive)
+     */
+    @Query("SELECT * FROM tasks WHERE title LIKE '%' || :query || '%' ORDER BY dueDate ASC")
+    fun searchTasksByTitle(query: String): Flow<List<TaskEntity>>
+    
+    /**
+     * Search tasks by title and priority
+     */
+    @Query("SELECT * FROM tasks WHERE title LIKE '%' || :query || '%' AND priority = :priority ORDER BY dueDate ASC")
+    fun searchTasksByTitleAndPriority(query: String, priority: String): Flow<List<TaskEntity>>
+    
+    /**
+     * Search tasks by title and completion status
+     */
+    @Query("SELECT * FROM tasks WHERE title LIKE '%' || :query || '%' AND isCompleted = :isCompleted ORDER BY dueDate ASC")
+    fun searchTasksByTitleAndCompletion(query: String, isCompleted: Boolean): Flow<List<TaskEntity>>
+    
+    /**
+     * Get tasks by priority and completion status
+     */
+    @Query("SELECT * FROM tasks WHERE priority = :priority AND isCompleted = :isCompleted ORDER BY dueDate ASC")
+    fun getTasksByPriorityAndCompletion(priority: String, isCompleted: Boolean): Flow<List<TaskEntity>>
+    
+    /**
+     * Search tasks by all filters (title, priority, completion)
+     */
+    @Query("SELECT * FROM tasks WHERE title LIKE '%' || :query || '%' AND priority = :priority AND isCompleted = :isCompleted ORDER BY dueDate ASC")
+    fun searchTasksByAll(query: String, priority: String, isCompleted: Boolean): Flow<List<TaskEntity>>
     
     /**
      * Insert new task
@@ -103,6 +139,18 @@ interface TaskDao {
      */
     @Query("UPDATE tasks SET isCompleted = 0, completedAt = NULL WHERE id = :taskId")
     suspend fun uncompleteTask(taskId: Int)
+    
+    /**
+     * Toggle task completion
+     */
+    @Query("UPDATE tasks SET isCompleted = :isCompleted, completedAt = :completedAt WHERE id = :taskId")
+    suspend fun toggleCompletion(taskId: Int, isCompleted: Boolean, completedAt: Long?)
+    
+    /**
+     * Delete task by ID
+     */
+    @Query("DELETE FROM tasks WHERE id = :taskId")
+    suspend fun deleteTaskById(taskId: Int)
     
     /**
      * Delete task

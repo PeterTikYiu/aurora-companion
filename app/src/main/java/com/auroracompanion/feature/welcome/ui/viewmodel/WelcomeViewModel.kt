@@ -2,7 +2,7 @@ package com.auroracompanion.feature.welcome.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.auroracompanion.core.data.repository.UserPreferencesRepository
+import com.auroracompanion.core.data.preferences.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -78,9 +78,9 @@ class WelcomeViewModel @Inject constructor(
             
             try {
                 // Save to DataStore
-                userPreferencesRepository.setStoreName(_storeName.value.trim())
-                userPreferencesRepository.setStaffName(_staffName.value.trim())
-                userPreferencesRepository.setFirstLaunch(false)
+                userPreferencesRepository.saveStoreName(_storeName.value.trim())
+                userPreferencesRepository.saveStaffName(_staffName.value.trim())
+                userPreferencesRepository.setFirstLaunchComplete()
                 
                 // Small delay for smooth UX (allows user to see the loading state)
                 delay(500)

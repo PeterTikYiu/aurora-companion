@@ -49,6 +49,9 @@ fun ProductDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
+    // Convert String productId to Int for comparison
+    val productIdInt = productId.toIntOrNull()
+    
     Scaffold(
         topBar = {
             TopAppBar(
@@ -78,13 +81,13 @@ fun ProductDetailScreen(
             
             is ProductUiState.Success -> {
                 val product = (uiState as ProductUiState.Success).products
-                    .find { it.id == productId }
+                    .find { it.id == productIdInt }
                 
-                if (product != null) {
+                if (product != null && productIdInt != null) {
                     ProductDetailContent(
                         product = product,
                         onStockUpdate = { newQty ->
-                            viewModel.updateStock(productId, newQty)
+                            viewModel.updateStock(productIdInt, newQty)
                         },
                         modifier = Modifier.padding(paddingValues)
                     )
@@ -98,7 +101,7 @@ fun ProductDetailScreen(
             
             is ProductUiState.Empty -> {
                 ProductsEmptyState(
-                    message = (uiState as ProductUiState.Empty).message,
+                    message = "No products found",
                     modifier = Modifier.padding(paddingValues)
                 )
             }
@@ -200,7 +203,6 @@ private fun ProductInfoCard(product: Product) {
             
             DetailRow(label = "SKU", value = product.sku)
             DetailRow(label = "Category", value = product.category)
-            DetailRow(label = "Barcode", value = product.barcode)
         }
     }
 }
@@ -321,22 +323,14 @@ private fun ProductDetailsCard(product: Product) {
             
             Divider(modifier = Modifier.padding(vertical = 8.dp))
             
-            product.description?.let {
-                DetailRow(label = "Description", value = it)
+            product.description?.let { desc ->
+                DetailRow(label = "Description", value = desc)
             }
-            
-            product.supplier?.let {
-                DetailRow(label = "Supplier", value = it)
-            }
-            
-            DetailRow(
-                label = "Min Stock Level",
-                value = product.minStockLevel.toString()
-            )
             
             DetailRow(
                 label = "Last Updated",
-                value = product.formattedLastUpdated
+                value = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.UK)
+                    .format(java.util.Date(product.lastModified))
             )
         }
     }

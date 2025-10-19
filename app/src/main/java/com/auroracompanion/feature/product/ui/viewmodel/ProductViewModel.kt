@@ -143,7 +143,7 @@ class ProductViewModel @Inject constructor(
  * 
  * Sealed interface ensures all states are handled in UI
  */
-sealed interface ProductUiState : UiState {
+sealed interface ProductUiState {
     /**
      * Loading state - show progress indicator
      */
@@ -157,10 +157,10 @@ sealed interface ProductUiState : UiState {
     /**
      * Error state with message
      */
-    data class Error(override val message: String) : ProductUiState, UiState.Error
+    data class Error(val message: String) : ProductUiState
     
     /**
      * Empty state - no products found
      */
-    data object Empty : ProductUiState, UiState.Empty
+    data object Empty : ProductUiState
 }

@@ -35,6 +35,30 @@ sealed class Screen(val route: String) {
     data object TaskList : Screen("tasks")
     
     /**
+     * Task Detail Screen
+     * View individual task details with edit/delete options
+     * 
+     * @param taskId Task ID parameter
+     */
+    data object TaskDetail : Screen("tasks/{taskId}") {
+        fun createRoute(taskId: Int) = "tasks/$taskId"
+    }
+    
+    /**
+     * Task Form Screen
+     * Create or edit tasks
+     * 
+     * @param taskId Task ID parameter (-1 for new task)
+     */
+    data object TaskForm : Screen("tasks/form?taskId={taskId}") {
+        fun createRoute(taskId: Int? = null) = if (taskId != null) {
+            "tasks/form?taskId=$taskId"
+        } else {
+            "tasks/form?taskId=-1"  // -1 indicates new task
+        }
+    }
+    
+    /**
      * Settings Screen
      * App configuration
      */

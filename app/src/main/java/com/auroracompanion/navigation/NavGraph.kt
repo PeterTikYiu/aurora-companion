@@ -9,6 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.auroracompanion.feature.product.ui.screen.ProductDetailScreen
 import com.auroracompanion.feature.product.ui.screen.ProductListScreen
+import com.auroracompanion.feature.task.ui.screen.TaskDetailScreen
+import com.auroracompanion.feature.task.ui.screen.TaskFormScreen
+import com.auroracompanion.feature.task.ui.screen.TaskListScreen
 import com.auroracompanion.feature.welcome.ui.screen.WelcomeScreen
 
 /**
@@ -66,8 +69,54 @@ fun AuroraNavGraph(
             )
         }
         
+        // Task List Screen
+        composable(route = Screen.TaskList.route) {
+            TaskListScreen(
+                onTaskClick = { taskId ->
+                    navController.navigate(Screen.TaskDetail.createRoute(taskId))
+                },
+                onCreateTask = {
+                    navController.navigate(Screen.TaskForm.createRoute())
+                }
+            )
+        }
+        
+        // Task Detail Screen
+        composable(
+            route = Screen.TaskDetail.route,
+            arguments = listOf(
+                navArgument("taskId") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val taskId = backStackEntry.arguments?.getInt("taskId") ?: return@composable
+            TaskDetailScreen(
+                taskId = taskId,
+                onNavigateBack = { navController.navigateUp() },
+                onEdit = { taskId ->
+                    navController.navigate(Screen.TaskForm.createRoute(taskId))
+                }
+            )
+        }
+        
+        // Task Form Screen (Create/Edit)
+        composable(
+            route = Screen.TaskForm.route,
+            arguments = listOf(
+                navArgument("taskId") {
+                    type = NavType.IntType
+                    defaultValue = -1  // -1 indicates new task
+                }
+            )
+        ) { backStackEntry ->
+            val taskIdArg = backStackEntry.arguments?.getInt("taskId") ?: -1
+            val taskId = if (taskIdArg == -1) null else taskIdArg
+            TaskFormScreen(
+                taskId = taskId,
+                onNavigateBack = { navController.navigateUp() }
+            )
+        }
+        
         // TODO: Add more screens as features are implemented
-        // - Task List Screen
         // - Settings Screen
     }
 }

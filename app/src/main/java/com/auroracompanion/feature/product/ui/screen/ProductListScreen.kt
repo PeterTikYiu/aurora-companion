@@ -2,6 +2,7 @@ package com.auroracompanion.feature.product.ui.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -206,7 +207,7 @@ private fun ProductListContent(
                 ) { product ->
                     ProductCard(
                         product = product,
-                        onClick = { onProductClick(product.id) }
+                        onClick = { onProductClick(product.id.toString()) }
                     )
                 }
             }
@@ -214,7 +215,7 @@ private fun ProductListContent(
         
         is ProductUiState.Empty -> {
             ProductsEmptyState(
-                message = uiState.message
+                message = "No products found"
             )
         }
         

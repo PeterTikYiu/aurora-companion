@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -53,6 +54,13 @@ class DatabaseSeeder @Inject constructor(
      */
     suspend fun seedDatabase(): Boolean = withContext(Dispatchers.IO) {
         try {
+            // Check if already seeded (products exist)
+            val productCount = database.productDao().getProductCount().first()
+            if (productCount > 0) {
+                // Already seeded, skip
+                return@withContext true
+            }
+            
             seedProducts()
             seedTasks()
             true
